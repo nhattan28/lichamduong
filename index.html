@@ -6,50 +6,48 @@
   <title>Thông Tin Thời Gian Âm Dương</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Quicksand', sans-serif;
       background: linear-gradient(to right, #ece9e6, #ffffff);
       margin: 0;
       padding: 0;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
     }
 
     .container {
-      background: #ffffff;
+      background: #fff;
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      padding: 30px 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 40px;
       text-align: center;
-      max-width: 400px;
       width: 90%;
-      animation: fadeIn 0.6s ease-in-out;
+      max-width: 800px;
+      animation: fadeIn 0.6s ease;
     }
 
     h1 {
-      font-size: 24px;
+      font-size: 32px;
       color: #2c3e50;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     .icon {
-      font-size: 36px;
-      margin-bottom: 10px;
+      font-size: 50px;
       color: #3498db;
+      margin-bottom: 10px;
     }
 
     p {
-      font-size: 18px;
-      margin: 14px 0;
+      font-size: 20px;
+      margin: 16px 0;
       color: #444;
-    }
-
-    .time {
-      font-size: 30px;
-      font-weight: bold;
-      color: #e67e22;
     }
 
     .label {
@@ -57,9 +55,37 @@
       color: #2c3e50;
     }
 
+    .time {
+      font-size: 32px;
+      font-weight: bold;
+      color: #e67e22;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+
+      .time {
+        font-size: 26px;
+      }
+
+      .icon {
+        font-size: 36px;
+      }
     }
   </style>
 </head>
@@ -68,11 +94,13 @@
     <div class="icon">📅</div>
     <h1>Thông Tin Thời Gian Âm Dương</h1>
     <p><span class="label">⏰ Thời gian hiện tại:</span> <span id="clock" class="time">--:--:--</span></p>
+    <p><span class="label">📅 Thứ:</span> <span id="thu">Đang tải...</span></p>
     <p><span class="label">📆 Ngày Dương:</span> <span id="ngayDuong">Đang tải...</span></p>
     <p><span class="label">🗓 Ngày Âm Lịch:</span> <span id="ngayAmLich">Đang tải...</span></p>
   </div>
 
   <script>
+    // Hàm cập nhật đồng hồ và thứ
     function updateClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -80,11 +108,16 @@
       const seconds = String(now.getSeconds()).padStart(2, '0');
       const timeString = `${hours}:${minutes}:${seconds}`;
       document.getElementById('clock').textContent = timeString;
+
+      const weekdays = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+      const thu = weekdays[now.getDay()];
+      document.getElementById('thu').textContent = thu;
     }
 
     setInterval(updateClock, 1000);
     updateClock();
 
+    // Hàm gọi API lấy ngày âm dương
     function getLichAmDuong() {
       const url = 'https://script.google.com/macros/s/AKfycbwmwE8vXEAr0nLBi6foKJexM6W9ZHu2qsXPhHQ763sx-lD3KawlTh4VFUzO4HO1SDk/exec';
 
