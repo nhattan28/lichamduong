@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thông Tin Thời Gian Âm Dương</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+    .time {
+      font-size: 28px;
+      font-weight: bold;
+      color: #e67e22;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Thông Tin Thời Gian Âm Dương</h1>
+    <p>⏰ Thời gian hiện tại: <span id="clock" class="time">Loading...</span></p>
+    <p>📆 Ngày Dương: <span id="ngayDuong">Loading...</span></p>
+    <p>🗓 Ngày Âm Lịch: <span id="ngayAmLich">Loading...</span></p>
+  </div>
+
+  <script>
+    // Hàm cập nhật đồng hồ mỗi giây
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const timeString = `${hours}:${minutes}:${seconds}`;
+      document.getElementById('clock').textContent = timeString;
+    }
+
+    setInterval(updateClock, 1000); // cập nhật mỗi giây
+    updateClock(); // gọi ngay khi tải trang
+
+    // Hàm lấy thông tin ngày dương và âm từ Apps Script
+    function getLichAmDuong() {
+      const url = 'https://script.google.com/macros/s/AKfycbwmwE8vXEAr0nLBi6foKJexM6W9ZHu2qsXPhHQ763sx-lD3KawlTh4VFUzO4HO1SDk/exec'; // 👉 thay bằng link Web App của bạn
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('ngayDuong').textContent = data.ngayDuong || 'Không rõ';
+          document.getElementById('ngayAmLich').textContent = data.ngayAmLich || 'Không rõ';
+        })
+        .catch(error => {
+          document.getElementById('ngayDuong').textContent = 'Lỗi';
+          document.getElementById('ngayAmLich').textContent = 'Lỗi';
+          console.error('Lỗi lấy lịch:', error);
+        });
+    }
+
+    getLichAmDuong(); // gọi khi trang tải
+  </script>
+</body>
+</html>
